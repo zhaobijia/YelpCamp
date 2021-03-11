@@ -23,6 +23,8 @@ db.once('open', function () {
 app.set('view engine', 'ejs');
 app.set("views", path.join(__dirname, 'views'))
 
+app.use(express.urlencoded({ extended: true }));
+
 app.get('/', (req, res) => {
     res.render('home');
 })
@@ -32,10 +34,23 @@ app.get('/campgrounds', async (req, res) => {
     res.render('campgrounds/index', { campgrounds });
 })
 
+app.get('/campgrounds/new', async (req, res) => {
+    res.render('campgrounds/new');
+})
+
 app.get('/campgrounds/:id', async (req, res) => {
     const { id } = req.params;
     const campground = await Campground.findById(id);
     res.render('campgrounds/show', { campground })
+})
+
+
+
+app.post('/campgrounds', async (req, res) => {
+    //we need express to parse req.body here, otherwise it will be empty
+    const newCampground = new Campground(req.body.campground);
+    await newCampground.save();
+    res.redirect(`/campgrounds/${newCampground._id}`);
 })
 
 app.listen(3000, () => {

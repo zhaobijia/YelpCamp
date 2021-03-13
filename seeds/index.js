@@ -10,6 +10,7 @@ mongoose.connect('mongodb://localhost:27017/yelp-camp', {
     useNewUrlParser: true,
     useCreateIndex: true,
     useUnifiedTopolo: true,
+    useFindAndModify: false
 })
 //from https://mongoosejs.com/docs/
 const db = mongoose.connection;

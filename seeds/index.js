@@ -32,11 +32,13 @@ const seedDB = async () => {
             title: `${randSample(descriptors)} ${randSample(places)}`,
             price: Math.floor(Math.random() * 20) + 10,
             description: "description description description",
-            location: `${cities[RandIndex].city},  ${cities[RandIndex].state}`
+            location: `${cities[RandIndex].city},  ${cities[RandIndex].state}`,
+            image: 'https://source.unsplash.com/collection/4651015'
         })
         await camp.save();
     }
 }
+
 
 seedDB().then(() => {
     mongoose.connection.close();

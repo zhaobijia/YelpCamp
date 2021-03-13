@@ -3,6 +3,7 @@ const Schema = mongoose.Schema; //shortcut for mongoose.Schema
 
 const CampgroundSchema = new Schema({
     title: String,
+    image: String,
     price: Number,
     description: String,
     location: String

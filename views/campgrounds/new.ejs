@@ -4,35 +4,53 @@
         <h1 class="text-center">Add New Campground</h1>
         <div class="col-6 offset-3">
 
-            <form action="/campgrounds" method="POST">
+            <form action="/campgrounds" method="POST" novalidate class="validated-form">
                 <div class="mb-3">
                     <label for="title" class="form-label">Campground Title</label>
-                    <input type="text" class="form-control" id="title" name="campground[title]">
+                    <input type="text" class="form-control" id="title" name="campground[title]" required>
+                    <div class="valid-feedback">
+                        Looks good!
+                    </div>
                 </div>
 
                 <div class="mb-3">
                     <label for="location" class="form-label">Campground Location</label>
-                    <input type="text" class="form-control" id="location" name="campground[location]">
+                    <input type="text" class="form-control" id="location" name="campground[location]" required>
+                    <div class="valid-feedback">
+                        Looks good!
+                    </div>
+
                 </div>
 
                 <div class="mb-3">
                     <label for="price" class="form-label">Campground Price</label>
                     <div class="input-group">
                         <span class="input-group-text">$</span>
-                        <input type="text" class="form-control" id="price" name="campground[price]" placeholder="0">
+                        <input type="text" class="form-control" id="price" name="campground[price]" placeholder="0"
+                            required>
                         <span class="input-group-text">.00</span>
+                        <div class="valid-feedback">
+                            Looks good!
+                        </div>
                     </div>
+
                 </div>
 
 
                 <div class="mb-3">
                     <label for="image" class="form-label">Campground Image Url</label>
-                    <input type="text" class="form-control" id="image" name="campground[image]">
+                    <input type="text" class="form-control" id="image" name="campground[image]" required>
+                    <div class="valid-feedback">
+                        Looks good!
+                    </div>
                 </div>
 
                 <div class="mb-3">
                     <label for="description" class="form-label">Campground Description</label>
-                    <textarea class="form-control" id="description" name="campground[description]"></textarea>
+                    <textarea class="form-control" id="description" name="campground[description]" required></textarea>
+                    <div class="valid-feedback">
+                        Looks good!
+                    </div>
                 </div>
 
                 <div class="mb-3">
@@ -43,3 +61,28 @@
         </div>
 
     </div>
+
+    <script>
+
+
+        (function () {
+            'use strict'
+
+            // Fetch all the forms we want to apply custom Bootstrap validation styles to
+            var forms = document.querySelectorAll('.validated-form')
+
+            // Loop over them and prevent submission
+            Array.from(forms)
+                .forEach(function (form) {
+                    form.addEventListener('submit', function (event) {
+                        if (!form.checkValidity()) {
+                            event.preventDefault()
+                            event.stopPropagation()
+                        }
+
+                        form.classList.add('was-validated')
+                    }, false)
+                })
+        })()
+
+    </script>

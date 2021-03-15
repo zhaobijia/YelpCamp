@@ -62,6 +62,8 @@ app.get('/campgrounds/:id/edit', catchAsync(async (req, res) => {
 
 
 app.post('/campgrounds', catchAsync(async (req, res) => {
+    if (!req.body.campground) throw new ExpressError("Invalid Campground data", 400)
+
     //we need express to parse req.body here, otherwise it will be empty
     const newCampground = new Campground(req.body.campground);
     await newCampground.save();
@@ -87,8 +89,9 @@ app.all('*', (req, res, next) => {
 //error handler
 app.use((err, req, res, next) => {
     //destructure & set the default
-    const { statusCode = 500, message = "default error message" } = err;
-    res.status(statusCode).send(message);
+    const { statusCode = 500 } = err;
+    if (!err.message) err.message = 'default error message';
+    res.status(statusCode).render('error', { err });
 })
 app.listen(3000, () => {
     console.log("LISTENING ON PORT 3000");

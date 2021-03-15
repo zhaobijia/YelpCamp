@@ -81,9 +81,14 @@ app.delete('/campgrounds/:id', catchAsync(async (req, res) => {
     res.redirect('/campgrounds');
 }))
 
+app.all('*', (req, res, next) => {
+    next(new ExpressError('Page Not Found', 404));
+})
 //error handler
 app.use((err, req, res, next) => {
-    res.send("error!!");
+    //destructure & set the default
+    const { statusCode = 500, message = "default error message" } = err;
+    res.status(statusCode).send(message);
 })
 app.listen(3000, () => {
     console.log("LISTENING ON PORT 3000");

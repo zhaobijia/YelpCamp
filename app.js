@@ -6,6 +6,7 @@ const ejsMate = require('ejs-mate');
 const methodOverride = require('method-override');
 const ExpressError = require('./utils/ExpressError');
 const catchAsync = require('./utils/catchAsync');
+const Joi = require('joi');
 
 const Campground = require('./models/campground');
 
@@ -62,8 +63,23 @@ app.get('/campgrounds/:id/edit', catchAsync(async (req, res) => {
 
 
 app.post('/campgrounds', catchAsync(async (req, res) => {
-    if (!req.body.campground) throw new ExpressError("Invalid Campground data", 400)
 
+    //try to validate before we save to mangoose
+    const campgroundSchema = Joi.object({
+        campground: Joi.object({
+            title: Joi.string().required(),
+            image: Joi.string().required(),
+            price: Joi.number().min(0).required(),
+            description: Joi.string().required(),
+            location: Joi.string().required()
+
+        }).required()
+    })
+    const { error } = campgroundSchema.validate(req.body);
+    if (error) {
+        const msg = error.details.map(el => el.message).join(',');
+        throw new ExpressError(msg, 400)
+    }
     //we need express to parse req.body here, otherwise it will be empty
     const newCampground = new Campground(req.body.campground);
     await newCampground.save();

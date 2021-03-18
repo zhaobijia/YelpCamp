@@ -41,7 +41,7 @@
             <!-- the reviews -->
             <div class="mb-3">
                 <h2>Leave a Review</h2>
-                <form action="" method="POST">
+                <form action="/campgrounds/<%= campground._id %>/reviews" method="POST">
                     <div class="mb-3">
                         <label class="form-label" for="reviewbody">Review</label>
                         <textarea class="form-control" name="review[body]" id="reviewbody" cols="30"

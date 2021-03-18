@@ -38,5 +38,22 @@
                 </div>
             </div>
 
+            <!-- the reviews -->
+            <div class="mb-3">
+                <h2>Leave a Review</h2>
+                <form action="" method="POST">
+                    <div class="mb-3">
+                        <label class="form-label" for="reviewbody">Review</label>
+                        <textarea class="form-control" name="review[body]" id="reviewbody" cols="30"
+                            rows="1"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="reviewrating" class="form-label">Rating</label>
+                        <input type="range" class="form-range" min="0" max="5" id="raviewrating">
+                    </div>
+                    <button class="btn btn-success">submit</button>
+                </form>
+            </div>
+
         </div>
     </div>

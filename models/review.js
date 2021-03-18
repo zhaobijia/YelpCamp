@@ -6,5 +6,7 @@ const RevivewSchema = new Schema({
     rating: Number
 });
 
+
+
 const Review = mongoose.model('Review', RevivewSchema);
 module.exports = Review;

@@ -108,6 +108,7 @@ app.delete('/campgrounds/:id', catchAsync(async (req, res) => {
     res.redirect('/campgrounds');
 }))
 
+
 // review Route
 app.post('/campgrounds/:id/reviews', validateReview, catchAsync(async (req, res) => {
     const campground = await Campground.findById(req.params.id);
@@ -116,6 +117,14 @@ app.post('/campgrounds/:id/reviews', validateReview, catchAsync(async (req, res)
     await review.save();
     await campground.save();
     res.redirect(`/campgrounds/${campground._id}`);
+}))
+
+app.delete('/campgrounds/:id/reviews/:reviewId', catchAsync(async (req, res) => {
+    const { id, reviewId } = req.params;
+    const campground = await Campground.findByIdAndUpdate(id, { $pull: { reviews: reviewId } });
+    await Review.findByIdAndDelete(reviewId);
+    res.redirect(`/campgrounds/${campground._id}`)
+
 }))
 
 app.all('*', (req, res, next) => {

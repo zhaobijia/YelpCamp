@@ -2,7 +2,7 @@
 
 
     <div class="row">
-        <div class="col-6 offset-3">
+        <div class="col-6 ">
             <div class="card mb-3">
                 <img src="<%= campground.image %>" class="card-img-top" alt="...">
                 <div class="card-body">
@@ -38,7 +38,12 @@
                 </div>
             </div>
 
-            <!-- the reviews -->
+
+
+
+        </div>
+        <div class="col-6">
+            <!-- add the reviews -->
             <div class="mb-3">
                 <h2>Leave a Review</h2>
                 <form action="/campgrounds/<%= campground._id %>/reviews" method="POST" novalidate
@@ -53,11 +58,30 @@
                     </div>
                     <div class="mb-3">
                         <label for="reviewrating" class="form-label">Rating</label>
-                        <input type="range" class="form-range" min="0" max="5" id="raviewrating">
+                        <input type="range" class="form-range" min="0" max="5" id="raviewrating" name="review[rating]">
                     </div>
                     <button class="btn btn-success">submit</button>
                 </form>
             </div>
 
+            <!-- display the reviews -->
+            <div class="mb-3">
+                <h4>review and rating:</h4>
+
+                <% for(let review of campground.reviews) {%>
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                rating: <%= review.rating %>
+                            </h5>
+                            <p class="card-text">
+                                review: <%= review.body %>
+                            </p>
+                        </div>
+                    </div>
+
+                    <% } %>
+
+            </div>
         </div>
     </div>

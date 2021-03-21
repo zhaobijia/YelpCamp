@@ -48,6 +48,7 @@ router.post('/', validateCampground, catchAsync(async (req, res) => {
     //we need express to parse req.body here, otherwise it will be empty
     const newCampground = new Campground(req.body.campground);
     await newCampground.save();
+    req.flash('success', 'Successfully made a new campground!');//req.flash come after successfully save
     res.redirect(`/campgrounds/${newCampground._id}`);
 }))
 

@@ -10,6 +10,7 @@ const { campgroundSchema, reviewSchema } = require('./schemas.js');
 const campgroundsRouter = require('./routes/campgrounds');
 const reviewRouter = require('./routes/reviews');
 const session = require('express-session');
+const flash = require('connect-flash');
 
 
 //mongoose connect mongodb
@@ -49,6 +50,14 @@ const sessionConfig = {
     }
 }
 app.use(session(sessionConfig));
+app.use(flash());
+//flash middleware, set it before routers
+app.use((req, res, next) => {
+    res.locals.success = req.flash('success');
+    res.locals.error = req.flash('error');
+    next();
+})
+
 
 app.use('/campgrounds', campgroundsRouter);
 app.use('/campgrounds/:id/reviews', reviewRouter);

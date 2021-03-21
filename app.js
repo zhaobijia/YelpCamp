@@ -9,6 +9,7 @@ const catchAsync = require('./utils/catchAsync');
 const { campgroundSchema, reviewSchema } = require('./schemas.js');
 const campgroundsRouter = require('./routes/campgrounds');
 const reviewRouter = require('./routes/reviews');
+const session = require('express-session');
 
 
 //mongoose connect mongodb
@@ -36,6 +37,18 @@ app.set("views", path.join(__dirname, 'views'))
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public')));
+
+const sessionConfig = {
+    secret: 'thisshouldbeabettersecret!',
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+        httpOnly: true,
+        expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
+        maxAge: 1000 * 60 * 60 * 24 * 7
+    }
+}
+app.use(session(sessionConfig));
 
 app.use('/campgrounds', campgroundsRouter);
 app.use('/campgrounds/:id/reviews', reviewRouter);

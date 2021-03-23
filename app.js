@@ -59,12 +59,6 @@ const sessionConfig = {
 app.use(session(sessionConfig));
 app.use(flash());
 
-//flash middleware, set it before routers
-app.use((req, res, next) => {
-    res.locals.success = req.flash('success');
-    res.locals.error = req.flash('error');
-    next();
-})
 
 //passport
 app.use(passport.initialize());
@@ -73,6 +67,14 @@ app.use(passport.session());
 passport.use(new LocalStrategy(User.authenticate()));//we can have multiple strategies
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
+
+//flash middleware, set it before routers
+app.use((req, res, next) => {
+    res.locals.currentUser = req.user;
+    res.locals.success = req.flash('success');
+    res.locals.error = req.flash('error');
+    next();
+})
 
 
 app.use('/campgrounds', campgroundsRouter);

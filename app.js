@@ -14,6 +14,7 @@ const User = require('./models/user');
 
 const campgroundsRouter = require('./routes/campgrounds');
 const reviewRouter = require('./routes/reviews');
+const userRouter = require('./routes/users');
 
 
 
@@ -76,6 +77,7 @@ passport.deserializeUser(User.deserializeUser());
 
 app.use('/campgrounds', campgroundsRouter);
 app.use('/campgrounds/:id/reviews', reviewRouter);
+app.use('/', userRouter);
 
 
 
@@ -83,12 +85,7 @@ app.get('/', (req, res) => {
     res.render('home');
 })
 
-//Test creation of new user
-app.get('/makeUser', async (req, res) => {
-    const user = new User({ email: 'haha@gmail.com', username: 'haha' });
-    const newUser = await User.register(user, 'hhh')//pass in a user and a password
-    res.send(newUser);
-})
+
 
 app.all('*', (req, res, next) => {
     next(new ExpressError('Page Not Found', 404));

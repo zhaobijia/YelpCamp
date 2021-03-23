@@ -5,12 +5,16 @@ const mongoose = require('mongoose');
 const ejsMate = require('ejs-mate');
 const methodOverride = require('method-override');
 const ExpressError = require('./utils/ExpressError');
-const catchAsync = require('./utils/catchAsync');
-const { campgroundSchema, reviewSchema } = require('./schemas.js');
-const campgroundsRouter = require('./routes/campgrounds');
-const reviewRouter = require('./routes/reviews');
 const session = require('express-session');
 const flash = require('connect-flash');
+const passport = require('passport');
+const LocalStrategy = require('passport-local');
+
+const User = require('./models/user');
+
+const campgroundsRouter = require('./routes/campgrounds');
+const reviewRouter = require('./routes/reviews');
+
 
 
 //mongoose connect mongodb
@@ -39,6 +43,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public')));
 
+
+
 const sessionConfig = {
     secret: 'thisshouldbeabettersecret!',
     resave: false,
@@ -51,6 +57,7 @@ const sessionConfig = {
 }
 app.use(session(sessionConfig));
 app.use(flash());
+
 //flash middleware, set it before routers
 app.use((req, res, next) => {
     res.locals.success = req.flash('success');
@@ -58,36 +65,30 @@ app.use((req, res, next) => {
     next();
 })
 
+//passport
+app.use(passport.initialize());
+app.use(passport.session());
+//authentication method is going to locate on our user model
+passport.use(new LocalStrategy(User.authenticate()));//we can have multiple strategies
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
 
 app.use('/campgrounds', campgroundsRouter);
 app.use('/campgrounds/:id/reviews', reviewRouter);
 
-const validateCampground = (req, res, next) => {
-    //try to validate before we save to mangoose
 
-    const { error } = campgroundSchema.validate(req.body);
-    if (error) {
-        const msg = error.details.map(el => el.message).join(',');
-        throw new ExpressError(msg, 400)
-    } else {
-        next();
-    }
-}
-
-const validateReview = (req, res, next) => {
-    const { error } = reviewSchema.validate(req.body);
-    if (error) {
-        const msg = error.details.map(el => el.message).join(',');
-        throw new ExpressError(msg, 400)
-    } else {
-        next();
-    }
-}
 
 app.get('/', (req, res) => {
     res.render('home');
 })
 
+//Test creation of new user
+app.get('/makeUser', async (req, res) => {
+    const user = new User({ email: 'haha@gmail.com', username: 'haha' });
+    const newUser = await User.register(user, 'hhh')//pass in a user and a password
+    res.send(newUser);
+})
 
 app.all('*', (req, res, next) => {
     next(new ExpressError('Page Not Found', 404));

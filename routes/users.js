@@ -27,8 +27,11 @@ router.post('/register', catchAsync(async (req, res) => {
 router.get('/login', (req, res) => {
     res.render('users/login');
 })
-router.post('/login', catchAsync(async (req, res) => {
-    res.send(req.body);
+//use passport middleware that we pass strategy
+router.post('/login', passport.authenticate('local', { failureFlash: true, failureRedirect: '/login' }), catchAsync(async (req, res) => {
+    const { username } = req.body;
+    req.flash('success', `Welcome! ${username}`);
+    res.redirect('/campgrounds');
 }))
 
 //logout

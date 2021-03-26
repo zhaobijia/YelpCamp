@@ -51,6 +51,7 @@
         <!-- add the reviews -->
         <div class="mb-3">
             <h2>Leave a Review</h2>
+            <% if(currentUser){ %>
             <form action="/campgrounds/<%= campground._id %>/reviews" method="POST" novalidate class="validated-form">
                 <div class="mb-3">
                     <label class="form-label" for="reviewbody">Review</label>
@@ -66,6 +67,20 @@
                 </div>
                 <button class="btn btn-success">submit</button>
             </form>
+            <% }else{ %>
+            <form>
+                <div class="mb-3">
+                    <label class="form-label" for="reviewbody">Review</label>
+                    <textarea class="form-control" id="reviewbody" cols="30" rows="1"
+                        placeholder="Login to leave a review.." readonly></textarea>
+                </div>
+                <div class="mb-3">
+                    <label for="reviewrating" class="form-label">Rating</label>
+                    <input type="range" class="form-range" min="0" max="5" id="raviewrating" readonly>
+                </div>
+                <button class="btn btn-success" disabled>submit</button>
+            </form>
+            <% } %>
         </div>
 
         <!-- display the reviews -->
@@ -81,11 +96,13 @@
                     <p class="card-text">
                         review: <%= review.body %>
                     </p>
-
-                    <form action="/campgrounds/<%= campground._id %>/reviews/<%= review._id %>?_method=DELETE "
+                    <p class="card-text text-muted">-- <%= review.author.username %> </p>
+                    <% if(currentUser && currentUser.equals(review.author._id)){ %>
+                    <form action="/campgrounds/<%= campground._id %>/reviews/<%= review._id %>?_method=DELETE"
                         method="POST">
                         <button class="btn btn-sm btn-danger">Delete</button>
                     </form>
+                    <% } %>
                 </div>
             </div>
 

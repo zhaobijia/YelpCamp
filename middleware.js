@@ -2,12 +2,14 @@ const express = require('express');
 const { reviewSchema, campgroundSchema } = require('./schemas');
 const ExpressError = require('./utils/ExpressError');
 const Campground = require('./models/campground');
+const Review = require('./models/review');
 
 
 module.exports.isLoggedIn = (req, res, next) => {
+
     if (!req.isAuthenticated()) {
         //store original url on session
-        req.session.returnTo = req.originalUrl;
+        req.session.returnTo = (req.query._method === "DELETE" ? '/campgrounds' : req.originalUrl);
         req.flash('error', 'you must be signed in');
         return res.redirect('/login')
     }
@@ -30,14 +32,24 @@ module.exports.isCampAuthor = async (req, res, next) => {
     const { id } = req.params;
     //authorization
     const camp = await Campground.findById(id);
-    if (!camp.author || !camp.author.equals(req.user._id)) {
+    if (!camp.author.equals(req.user._id)) {
         req.flash('error', 'You do not have permission to do that');
         return res.redirect(`/campgrounds/${camp._id}`);
-
     }
+
     next();
 }
 
+module.exports.isReviewAuthor = async (req, res, next) => {
+    const { id, reviewId } = req.params;
+    const camp = await Campground.findById(id);
+    const review = await Review.findById(reviewId);
+    if (!review.author.equals(req.user._id)) {
+        req.flash('error', 'You do not have permission to do that');
+        return res.redirect(`/campgrounds/${camp._id}`);
+    }
+    next()
+}
 module.exports.validateReview = (req, res, next) => {
     const { error } = reviewSchema.validate(req.body);
     if (error) {

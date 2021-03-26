@@ -3,34 +3,7 @@ const router = express.Router();
 const catchAsync = require('../utils/catchAsync');
 const ExpressError = require('../utils/ExpressError');
 const Campground = require('../models/campground');
-const { isLoggedIn } = require('../middleware');
-
-const { campgroundSchema } = require('../schemas.js');
-
-const validateCampground = (req, res, next) => {
-    //try to validate before we save to mangoose
-
-    const { error } = campgroundSchema.validate(req.body);
-    if (error) {
-        const msg = error.details.map(el => el.message).join(',');
-        throw new ExpressError(msg, 400)
-    } else {
-        next();
-    }
-}
-
-const isCampAuthor = async (req, res) => {
-    const { id } = req.params;
-    //authorization
-    const camp = await Campground.findById(id);
-    if (!camp.author || !camp.author.equals(req.user._id)) {
-        req.flash('error', 'You do not have permission to do that');
-        return res.redirect(`/campgrounds/${camp._id}`);
-
-    }
-    next();
-}
-
+const { isLoggedIn, isCampAuthor, validateCampground } = require('../middleware');
 
 
 

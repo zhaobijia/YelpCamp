@@ -34,7 +34,8 @@ router.get('/new', isLoggedIn, catchAsync(async (req, res) => {
 
 router.get('/:id', catchAsync(async (req, res) => {
     const { id } = req.params;
-    const campground = await Campground.findById(id).populate('reviews');
+    const campground = await Campground.findById(id).populate('reviews').populate('author');
+
     if (!campground) {
         req.flash('error', 'campground cannot be found.');
         return res.redirect('/campgrounds');
@@ -58,6 +59,7 @@ router.post('/', isLoggedIn, validateCampground, catchAsync(async (req, res) => 
 
     //we need express to parse req.body here, otherwise it will be empty
     const newCampground = new Campground(req.body.campground);
+    newCampground.author = req.user._id;
     await newCampground.save();
     req.flash('success', 'Successfully made a new campground!');//req.flash come after successfully save
     res.redirect(`/campgrounds/${newCampground._id}`);

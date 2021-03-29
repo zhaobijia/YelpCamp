@@ -34,8 +34,17 @@ const seedDB = async () => {
             price: Math.floor(Math.random() * 20) + 10,
             description: "description description description",
             location: `${cities[RandIndex].city},  ${cities[RandIndex].state}`,
-            image: 'https://source.unsplash.com/collection/4651015',
-            author: '60594bf632a02d7a1040cd67'
+            author: '60594bf632a02d7a1040cd67',
+            images: [
+                {
+                    url: 'https://res.cloudinary.com/dro7niddl/image/upload/v1617055104/YelpCamp/a8sbj1nfo1ouufecuooo.jpg',
+                    filename: 'YelpCamp/a8sbj1nfo1ouufecuooo'
+                },
+                {
+                    url: 'https://res.cloudinary.com/dro7niddl/image/upload/v1617055104/YelpCamp/vtxpdbsyzb9ojjgsnu4e.jpg',
+                    filename: 'YelpCamp/vtxpdbsyzb9ojjgsnu4e'
+                }
+            ]
 
 
         })

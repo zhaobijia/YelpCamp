@@ -47,11 +47,15 @@
                 </div>
             </div>
 
-            <div class="mb-3">
+            <div class="mb-3 d-flex">
                 <% campground.images.forEach(function(image,i){ %>
-                <img src="<%= image.url %> " class="img-thumbnail" alt="campground image <%= i %> ">
-                <label for="image-<%=i%>">Select to delete</label>
-                <input type="checkbox" name="deleteImages[]" id="image-<%=i%>" value="<%= image.filename %>">
+                <figure>
+                    <img src="<%= image.thumbnail %> " class="img-thumbnail" alt="campground image <%= i %> ">
+                    <figcaption>
+                        <label for="image-<%=i%>">Select to delete</label>
+                        <input type="checkbox" name="deleteImages[]" id="image-<%=i%>" value="<%= image.filename %>">
+                    </figcaption>
+                </figure>
                 <% }) %>
             </div>
 

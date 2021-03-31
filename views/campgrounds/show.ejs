@@ -1,8 +1,12 @@
 <% layout('layouts/boilerplate') %>
 <link rel="stylesheet" href="/stylesheets/stars.css">
 
+
 <div class="row">
     <div class="col-6 ">
+        <!-- map -->
+        <div id='map' style='width: 400px; height: 300px;'></div>
+
         <div class="card mb-3">
             <!-- image carousel -->
             <div id="campCarousel" class="carousel slide" data-bs-ride="carousel">
@@ -68,10 +72,8 @@
             </div>
         </div>
 
-
-
-
     </div>
+
     <div class="col-6">
         <!-- add the reviews -->
         <div class="mb-3">
@@ -156,3 +158,9 @@
         </div>
     </div>
 </div>
+<script>
+    const maptoken = '<%-process.env.MAPBOX_TOKEN%>';
+    const campground = '<%- JSON.stringify(campground) %>';
+</script>
+
+<script src="/javascripts/showMap.js"></script>

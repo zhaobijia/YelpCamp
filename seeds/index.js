@@ -34,6 +34,10 @@ const seedDB = async () => {
             price: Math.floor(Math.random() * 20) + 10,
             description: "description description description",
             location: `${cities[RandIndex].city},  ${cities[RandIndex].state}`,
+            geometry: {
+                type: 'Point',
+                coordinates: [cities[RandIndex].longitude, cities[RandIndex].latitude]
+            },
             author: '60594bf632a02d7a1040cd67',
             images: [
                 {

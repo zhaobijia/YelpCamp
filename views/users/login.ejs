@@ -1,22 +1,36 @@
 <% layout('layouts/boilerplate') %>
-<div class="row">
-    <div class="col-6 offset-3">
-        <h1>Login</h1>
 
-        <form action="/login" method="post" class="validated-form" novalidate>
-            <div class="mb-3">
-                <label for="username" class="form-label">Username</label>
-                <input type="text" class="form-control" id="username" name="username" required>
+<div class="container justify-content-center align-items-center mt-5">
+    <div class="row">
+        <div class="col-md-6 offset-md-3 col-xl-4 offset-xl-4">
+            <div class="card shadow">
+                <img src="https://images.unsplash.com/photo-1478131143081-80f7f84ca84d?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=1050&q=80" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">Login</h5>
+                <form action="/login" method="post" class="validated-form" novalidate>
+                    <div class="mb-3">
+                        <label for="username" class="form-label">Username</label>
+                        <input type="text" class="form-control" id="username" name="username" required>
+                        <div class="valid-feedback">
+                            looks good!~
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Password</label>
+                        <input type="password" class="form-control" id="password" name="password" required>
+                        <div class="valid-feedback">
+                            looks good!~
+                        </div>
+                    </div>
+        
+                    <div class="d-grid mb-3">
+                        <button class="btn btn-success" type="button">Login</button>
+                    </div>
+                </form>
+                </div>
             </div>
-            <div class="mb-3">
-                <label for="password" class="form-label">Password</label>
-                <input type="password" class="form-control" id="password" name="password" required>
-            </div>
-
-            <div class="mb-3">
-                <button class="btn btn-success">Login</button>
-            </div>
-        </form>
+        </div>
     </div>
-
 </div>
+
+

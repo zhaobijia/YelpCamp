@@ -27,7 +27,7 @@ const randSample = (array) => {
 
 const seedDB = async () => {
     await Campground.deleteMany({})
-    for (let i = 0; i < 50; i++) {
+    for (let i = 0; i < 200; i++) {
         const RandIndex = Math.floor(Math.random() * 1000);
         const camp = new Campground({
             title: `${randSample(descriptors)} ${randSample(places)}`,

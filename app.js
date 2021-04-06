@@ -24,7 +24,7 @@ const reviewRouter = require('./routes/reviews');
 const userRouter = require('./routes/users');
 
 const atlasDBUrl= process.env.DB_URL;
-const dbUrl = 'mongodb://localhost:27017/yelp-camp'||atlasDBUrl;
+const dbUrl = atlasDBUrl||'mongodb://localhost:27017/yelp-camp';
 
 
 //mongoose connect mongodb

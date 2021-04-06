@@ -23,13 +23,13 @@ const campgroundsRouter = require('./routes/campgrounds');
 const reviewRouter = require('./routes/reviews');
 const userRouter = require('./routes/users');
 
-const localDBUrl = 'mongodb://localhost:27017/yelp-camp';
 const atlasDBUrl= process.env.DB_URL;
+const dbUrl = 'mongodb://localhost:27017/yelp-camp'||atlasDBUrl;
 
 
 //mongoose connect mongodb
 //'mongodb://localhost:27017/yelp-camp'
-mongoose.connect(localDBUrl, {
+mongoose.connect(dbUrl, {
     useNewUrlParser: true,
     useCreateIndex: true,
     useUnifiedTopology: true,
@@ -100,9 +100,11 @@ app.use(
     })
 );
 
+const secret = process.env.SECRET || 'indevmodethisshouldbeabettersecret!'
+
 const store = new MongoDBStore({
-    mongoUrl:localDBUrl,
-    secret:  'thisshouldbeabettersecret!',
+    mongoUrl:dbUrl,
+    secret,
     touchAfter: 24*60*60
 })
 
@@ -113,7 +115,7 @@ store.on("error", function(e){
 const sessionConfig = {
     store,
     name: 'taotao',
-    secret: 'thisshouldbeabettersecret!',
+    secret,
     resave: false,
     saveUninitialized: true,
     cookie: {
